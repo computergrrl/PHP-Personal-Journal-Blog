@@ -1,27 +1,59 @@
-<?php include('inc/header.php'); ?>
+<?php
+require('inc/connection.php');
+include('inc/header.php');
+$entry_id = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_NUMBER_INT);
+$entry_id--;
+
+?>
         <section>
             <div class="container">
                 <div class="entry-list single">
                     <article>
-                        <h1>The best day I’ve ever had</h1>
-                        <time datetime="2016-01-31">January 31, 2016</time>
+
+                        <?php
+                        echo "<h1>" .$journals[$entry_id]['title'] . "</h1>";
+                        $getdate = $journals[$entry_id]['date'];
+                        $date = date("F d, Y", strtotime($getdate));
+                        ?>
+                        <time datetime="2016-01-11"><?php
+                        echo $date; ?></time>
                         <div class="entry">
                             <h3>Time Spent: </h3>
-                            <p>15 Hours</p>
+                            <p><?php echo $journals[$entry_id]['time_spent']; ?></p>
                         </div>
                         <div class="entry">
-                            <h3>What I Learned:</h3>
-
+                            <h3>Entry</h3>
+                              <?php echo "<p>" .$journals[$entry_id]['entry'] . "</p>";?>
                         </div>
                         <div class="entry">
                             <h3>Resources to Remember:</h3>
+                            <?php
+
+                              $sql2 = "SELECT link_id, display_text, link, resources.journal_id FROM resources JOIN journal ON resources.journal_id = journal.journal_id";
+                              $getResources = $db->prepare($sql2);
+                              $getResources->execute();
+                              $resources = $getResources->fetchAll(PDO::FETCH_ASSOC);
+
+                              ?>
+
+
                             <ul>
+                                <?php
+                                $entry_id++;
+                                foreach($resources as $resource) {
+                                  var_dump($resource);
+                                  echo "<br /> <br />";
+
+                                }
+
+                                ?>
                                 <li><a href="">Lorem ipsum dolor sit amet</a></li>
                                 <li><a href="">Cras accumsan cursus ante, non dapibus tempor</a></li>
                                 <li>Nunc ut rhoncus felis, vel tincidunt neque</li>
                                 <li><a href="">Ipsum dolor sit amet</a></li>
                             </ul>
                         </div>
+
                     </article>
                 </div>
             </div>

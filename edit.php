@@ -1,4 +1,5 @@
 <?php
+require('inc/connection.php');
 include('inc/header.php');
 ?>
         <section>
