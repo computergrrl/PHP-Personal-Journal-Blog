@@ -1,5 +1,6 @@
 <?php
 require('inc/connection.php');
+include('inc/queries.php');
 include('inc/header.php');
 ?>
         <section>

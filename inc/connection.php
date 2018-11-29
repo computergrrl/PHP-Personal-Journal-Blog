@@ -12,14 +12,4 @@ try {
 
   }
 
-  try {
-        $sql = "SELECT * FROM journal";
-        $results = $db->prepare($sql);
-        $results->execute();
-        $journals =  $results->fetchAll(PDO::FETCH_ASSOC);
-
-
-        }  catch (Exception $e) {
-      echo "Bad request: " . $e->getMessage();
-      exit;
-  }
+  

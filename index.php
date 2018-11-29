@@ -1,5 +1,6 @@
 <?php
 require('inc/connection.php');
+include('inc/queries.php');
 include('inc/header.php');
 ?>
 
@@ -7,6 +8,7 @@ include('inc/header.php');
             <div class="container">
                 <div class="entry-list">
                     <?php
+              
                     foreach($journals as $entry) {
                       echo '<article><h2><a href="detail.php?q=' .$entry["journal_id"]
                               .'">' .$entry['title'] . '</a></h2>';

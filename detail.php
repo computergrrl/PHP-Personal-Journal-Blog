@@ -1,5 +1,6 @@
 <?php
 require('inc/connection.php');
+include('inc/queries.php');
 include('inc/header.php');
 $entry_id = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_NUMBER_INT);
 $entry_id--;
@@ -11,12 +12,15 @@ $entry_id--;
                     <article>
 
                         <?php
+                        
                         echo "<h1>" .$journals[$entry_id]['title'] . "</h1>";
                         $getdate = $journals[$entry_id]['date'];
                         $date = date("F d, Y", strtotime($getdate));
+
+                        echo '<time datetime="' .$getdate .'">';
+                        echo $date;
+                        echo"</time>";
                         ?>
-                        <time datetime="2016-01-11"><?php
-                        echo $date; ?></time>
                         <div class="entry">
                             <h3>Time Spent: </h3>
                             <p><?php echo $journals[$entry_id]['time_spent']; ?></p>
@@ -27,27 +31,24 @@ $entry_id--;
                         </div>
                         <div class="entry">
                             <h3>Resources to Remember:</h3>
-                            <?php
 
-                              $sql2 = "SELECT link_id, display_text, link, resources.journal_id FROM resources JOIN journal ON resources.journal_id = journal.journal_id";
-                              $getResources = $db->prepare($sql2);
-                              $getResources->execute();
-                              $resources = $getResources->fetchAll(PDO::FETCH_ASSOC);
-
-                              ?>
 
 
                             <ul>
                                 <?php
-                                $entry_id++;
                                 foreach($resources as $resource) {
-                                  var_dump($resource);
-                                  echo "<br /> <br />";
+                                  if ($resource['journal_id'] == $journals[$entry_id]['journal_id']) {
+                                    echo '<li><a href="'
+                                      . $resource['link']
+                                      .'">'
+                                      . $resource['display_text']
+                                      . '</a></li>';
+                                  }
+                                    }
+                                    exit;
 
-                                }
+                                                            ?>
 
-                                ?>
-                                <li><a href="">Lorem ipsum dolor sit amet</a></li>
                                 <li><a href="">Cras accumsan cursus ante, non dapibus tempor</a></li>
                                 <li>Nunc ut rhoncus felis, vel tincidunt neque</li>
                                 <li><a href="">Ipsum dolor sit amet</a></li>
