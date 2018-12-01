@@ -1,6 +1,6 @@
 <?php
 require('inc/connection.php');
-include('inc/queries.php');
+include('inc/functions.php');
 include('inc/header.php');
 $entry_id = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_NUMBER_INT);
 $entry_id--;
@@ -12,7 +12,7 @@ $entry_id--;
                     <article>
 
                         <?php
-                        
+
                         echo "<h1>" .$journals[$entry_id]['title'] . "</h1>";
                         $getdate = $journals[$entry_id]['date'];
                         $date = date("F d, Y", strtotime($getdate));
@@ -39,27 +39,33 @@ $entry_id--;
                                 foreach($resources as $resource) {
                                   if ($resource['journal_id'] == $journals[$entry_id]['journal_id']) {
                                     echo '<li><a href="'
-                                      . $resource['link']
+                                      . $resource['link_address']
                                       .'">'
-                                      . $resource['display_text']
+                                      . $resource['link_name']
                                       . '</a></li>';
                                   }
                                     }
-                                    exit;
+
 
                                                             ?>
 
-                                <li><a href="">Cras accumsan cursus ante, non dapibus tempor</a></li>
-                                <li>Nunc ut rhoncus felis, vel tincidunt neque</li>
-                                <li><a href="">Ipsum dolor sit amet</a></li>
-                            </ul>
+                              </ul>
                         </div>
 
                     </article>
                 </div>
             </div>
             <div class="edit">
-                <p><a href="edit.php">Edit Entry</a></p>
+
+                  <p>
+                  <?php
+                  $project_id = $journals[$entry_id]['journal_id'];
+
+                  echo '<a href="edit.php?q='
+                        . $project_id
+                        . '">Edit Entry</a></p>';
+                        ?>
+
             </div>
         </section>
         <?php include('inc/footer.php'); ?>
