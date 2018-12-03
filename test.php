@@ -5,39 +5,45 @@ include('inc/functions.php');
 
 
 
+
 if(!empty($_POST)) {
      $linkName = $_POST['link_name'];
      $linkAddress = $_POST['link_address'];
+
     foreach($linkName as $link) {
-
       $newEntry1 = "INSERT INTO resources(link_name) VALUES (?)";
-      try {
-        $the_link_names = $db->prepare($newEntry1);
-        $the_link_names->bindValue(1, $link, PDO::PARAM_STR);
-        $the_link_names->execute();
 
-      }  catch (Exception $e)  {
-            echo "Unable to add entry1 <br />" . $e->getMessage();
-            return false;
-      }
-      foreach($linkAddress as $address) {
-      $newEntry2 = "UPDATE resources SET link_address = ? WHERE link_id = ?";
-      $id = $db->lastInsertId();
-      try {
-        $the_link_addresses = $db->prepare($newEntry2);
-        $the_link_addresses->bindValue(1, $address, PDO::PARAM_STR);
-        $the_link_addresses->bindValue(2, $id, PDO::PARAM_INT);
-        $the_link_addresses->execute();
 
-      }  catch (Exception $e)  {
-            echo "Unable to add entry2 <br />" . $e->getMessage();
-            return false;
-                      }
+            try {
+              $the_link_names = $db->prepare($newEntry1);
+              $the_link_names->bindValue(1, $link, PDO::PARAM_STR);
+              $the_link_names->execute();
 
-                    }
+            }  catch (Exception $e)  {
+                  echo "Unable to add entry1 <br />" . $e->getMessage();
+                  return false;
+            }
+
 
 
       }
+
+foreach ($linkAddress as $address)
+
+            $newEntry2 = "UPDATE resources SET link_address = ? WHERE link_id = ?";
+            $id = $db->lastInsertId();
+            try {
+              $the_link_addresses = $db->prepare($newEntry2);
+              $the_link_addresses->bindValue(1, $address, PDO::PARAM_STR);
+              $the_link_addresses->bindValue(2, $id, PDO::PARAM_INT);
+              $the_link_addresses->execute();
+
+            }  catch (Exception $e)  {
+                  echo "Unable to add entry2 <br />" . $e->getMessage();
+                  return false;
+                }
+
+
 
 }
 include('inc/header.php');
