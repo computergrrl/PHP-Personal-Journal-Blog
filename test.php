@@ -5,22 +5,37 @@ include('inc/functions.php');
 
 
 
-if(isset($_POST)) {
-    $linkName = $_POST['link_name'];
-    $linkAddress = $_POST['link_address'];
+if(!empty($_POST)) {
+     $linkName = $_POST['link_name'];
+     $linkAddress = $_POST['link_address'];
+    foreach($linkName as $link) {
 
-      foreach($linkName as $link) {
-        $newEntry2 = "INSERT INTO resources(link_name, link_address) VALUES (?, ?)";
-        try {
-          $results2 = $db->prepare($newEntry2);
-          $results2->bindValue(1, $linkName, PDO::PARAM_STR);
-          $results2->bindValue(2, $linkAddress, PDO::PARAM_STR);
-          $results2->execute();
-        }  catch (Exception $e)  {
-              echo "Unable to add entry <br />" . $e->getMessage();
-              return false;
-        }
-        return true;
+      $newEntry1 = "INSERT INTO resources(link_name) VALUES (?)";
+      try {
+        $the_link_names = $db->prepare($newEntry1);
+        $the_link_names->bindValue(1, $linkName, PDO::PARAM_STR);
+        $the_link_names->execute();
+        $id = $db->lastInsertId();
+      }  catch (Exception $e)  {
+            echo "Unable to add entry <br />" . $e->getMessage();
+            return false;
+      }
+      foreach($linkAddress as $address) {
+      $newEntry2 = "UPDATE resources SET link_name = ? WHERE link_id = ?";
+      try {
+        $the_link_addresses = $db->prepare($newEntry1);
+        $the_link_addresses->bindValue(1, $linkName, PDO::PARAM_STR);
+        $the_link_addresses->bindValue(2, $id, PDO::PARAM_INT);
+        $the_link_addresses->execute();
+
+      }  catch (Exception $e)  {
+            echo "Unable to add entry <br />" . $e->getMessage();
+            return false;
+                      }
+
+                    }
+
+
       }
 
 }
