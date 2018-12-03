@@ -1,7 +1,7 @@
 <?php
 require('inc/connection.php');
 include('inc/functions.php');
-include('inc/header.php');
+
 
 if(!empty($_POST)) {
 $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
@@ -15,17 +15,18 @@ $link_address = filter_input(INPUT_POST, 'link_address', FILTER_SANITIZE_URL);
 if(new_entry($title, $date, $time_spent, $entry, $link_name, $link_address)) {
     header('location:index.php');
 }  else {
-  echo "Could not add entry";
+  echo "<h1>Could not add entry</h1>";
 }
 
 }
+
+include('inc/header.php');
 ?>
         <section>
             <div class="container">
                 <div class="new-entry">
                     <h2>New Entry</h2>
-                    <form method="post" action="test.php">
-
+                    <form method="post" action="new.php">
                         <label for="title"> Title</label>
                         <input id="title" type="text" name="title"><br>
                         <label for="date">Date</label>
