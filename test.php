@@ -10,26 +10,30 @@ if(!empty($_POST)) {
      $linkName = $_POST['link_name'];
      $linkAddress = $_POST['link_address'];
 
-     for($i=0; $i <= count($linkName); i++) {
+
+       $newEntry2 = "INSERT INTO resources(link_name, link_address) VALUES (?, ?)";
+
+     for($i=0; $i < count($linkName); $i++) {
 
           $link = $linkName[$i];
           $address = $linkAddress[$i];
 
-          $newEntry1 = "INSERT INTO resources(link_name, link_address) VALUES (?, ?)";
+          if($link == null) {
+          } else {
+              try {
+                $the_links = $db->prepare($newEntry2);
+                $the_links->bindValue(1, $link, PDO::PARAM_STR);
+                $the_links->bindValue(2, $address, PDO::PARAM_STR);
+                $the_links->execute();
 
-
-                      try {
-                        $the_links = $db->prepare($newEntry1);
-                        $the_links->bindValue(1, $link, PDO::PARAM_STR);
-                        $the_links->bindValue(2, $address, PDO::PARAM_STR);
-                        $the_links->execute();
-
-                      }  catch (Exception $e)  {
-                            echo "Unable to add entry1 <br />" . $e->getMessage();
-                            return false;
-                      }
-
+              }  catch (Exception $e)  {
+                    echo "Unable to add entry1 <br />" . $e->getMessage();
+                    return false;
+              }
             }
+            }
+
+
 
     }
 
@@ -44,7 +48,7 @@ include('inc/header.php');
 <form action="test.php" method="post">
   <fieldset>
     <legend>Resources to remember:</legend>
-    <legend>Save a web link for later reference</legend>
+    <legend>Save up to 3 web links for future reference</legend>
   <label for="link_name">Enter name for link:</label>
   <input id="link_name" type="text" name="link_name[]">
   <label for="link_address">Enter web link here:</label>

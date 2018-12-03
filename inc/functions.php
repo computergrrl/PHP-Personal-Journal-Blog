@@ -32,20 +32,46 @@ function new_entry($title, $date, $time_spent, $entry, $link_name = null, $link_
         $results->execute();
         $id = $db->lastInsertId();
       }   catch (Exception $e) {
-            echo "Unable to add entry <br />" . $e->getMessage();
+            echo "Unable to add entry1 <br />" . $e->getMessage();
             return false;
     }
-    $newEntry2 = "INSERT INTO resources(link_name, link_address, journal_id) VALUES (?, ?, ?)";
-    try {
-      $results2 = $db->prepare($newEntry2);
-      $results2->bindValue(1, $link_name, PDO::PARAM_STR);
-      $results2->bindValue(2, $link_address, PDO::PARAM_STR);
-      $results2->bindValue(3, $id, PDO::PARAM_INT);
-      $results2->execute();
-    }  catch (Exception $e)  {
-          echo "Unable to add entry <br />" . $e->getMessage();
-          return false;
-  }
+  //   $newEntry2 = "INSERT INTO resources(link_name, link_address, journal_id) VALUES (?, ?, ?)";
+  //   try {
+  //     $results2 = $db->prepare($newEntry2);
+  //     $results2->bindValue(1, $link_name, PDO::PARAM_STR);
+  //     $results2->bindValue(2, $link_address, PDO::PARAM_STR);
+  //     $results2->bindValue(3, $id, PDO::PARAM_INT);
+  //     $results2->execute();
+  //   }  catch (Exception $e)  {
+  //         echo "Unable to add entry <br />" . $e->getMessage();
+  //         return false;
+  // }
+  $newEntry2 = "INSERT INTO resources(link_name, link_address, journal_id) VALUES (?, ?, ?)";
+
+for($i=0; $i < count($link_name); $i++) {
+
+     $link = $link_name[$i];
+     $address = $link_address[$i];
+
+         if($link == null)
+         {}  else {
+
+         try {
+           $the_links = $db->prepare($newEntry2);
+           $the_links->bindValue(1, $link, PDO::PARAM_STR);
+           $the_links->bindValue(2, $address, PDO::PARAM_STR);
+           $the_links->bindValue(3, $id, PDO::PARAM_INT);
+           $the_links->execute();
+
+         }  catch (Exception $e)  {
+               echo "Unable to add entry2 <br />" . $e->getMessage();
+               return false;
+         }
+
+       }
+
+   }
+
         return true;
 }
 
