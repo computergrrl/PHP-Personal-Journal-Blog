@@ -14,7 +14,7 @@ $link_name = filter_input(INPUT_POST, 'link_name', FILTER_SANITIZE_STRING);
 $link_address = filter_input(INPUT_POST, 'link_address', FILTER_SANITIZE_URL);
 
   if(update_entry($title, $date, $time_spent, $entry,
-  $link_name = null, $link_address = null, $q)) {
+  $link_name, $link_address, $q)) {
       header('location:index.php');
   }
 
@@ -22,6 +22,7 @@ $link_address = filter_input(INPUT_POST, 'link_address', FILTER_SANITIZE_URL);
 
 $q--;
 $get_id = $journals[$q];
+
 
 
 
@@ -43,10 +44,18 @@ include('inc/header.php');
                         <fieldset>
                           <legend>Resources to remember:</legend>
                           <legend>Save a web link for later reference</legend>
-                        <label for="link_name">Enter name for link:</label>
-                        <input id="link_name" type="text" name="link_name" value="<?php echo $get_id2['link_name'];?>">>
-                        <label for="link_address">Enter web link here:</label>
-                        <input id="link_address" type="text" name="link_address" value="<?php echo $get_id2['link_address'];?>">>
+
+                        <?php  foreach($resources as $link) {
+
+
+                          if($link['journal_id'] == $get_id['journal_id']) {
+
+                            echo '<label for="link_name">Enter name for link:</label>';
+                            echo '<input id="link_name" type="text" name="link_name" value="' .$link["link_name"] .'">';
+                            echo '<label for="link_address">Enter web link here:</label>';
+                            echo '<input id="link_address" type="text" name="link_address" value="' .$link['link_address'] .'">';
+                        }
+                      } ?>
                         <input type="submit" value="Publish Entry" class="button">
                         <a href="#" class="button button-secondary">Cancel</a>
                     </form>

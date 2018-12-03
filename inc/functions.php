@@ -19,7 +19,7 @@ try {  $sql2 = "SELECT link_id, link_name, link_address, resources.journal_id
       echo "Bad request from query 2: " . $e->getMessage();
       exit;
 }
-function new_entry($title, $date, $time_spent, $entry, $link_name, $link_address) {
+function new_entry($title, $date, $time_spent, $entry, $link_name = null, $link_address = null) {
         include('connection.php');
     $newEntry1 = "INSERT INTO journal(title, date, time_spent, entry)
                   VALUES(?, ?, ?, ?)" ;
