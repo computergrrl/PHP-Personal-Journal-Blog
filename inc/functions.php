@@ -1,5 +1,5 @@
 <?php
-//1st query - used for all information except resource links
+//1st query - used to access journal table
 try {
       $sql = "SELECT * FROM journal";
       $results = $db->prepare($sql);
@@ -9,7 +9,7 @@ try {
     echo "Bad request from query 1: " . $e->getMessage();
     exit;
 }
-//2nd query - used for resources to remember links
+//2nd query - used to access resources table
 try {  $sql2 = "SELECT link_id, link_name, link_address, resources.journal_id
    FROM resources JOIN journal ON journal.journal_id = resources.journal_id";
   $getResources = $db->prepare($sql2);
@@ -19,6 +19,8 @@ try {  $sql2 = "SELECT link_id, link_name, link_address, resources.journal_id
       echo "Bad request from query 2: " . $e->getMessage();
       exit;
 }
+
+//function for adding new entries
 function new_entry($title, $date, $time_spent, $entry, $link_name = null, $link_address = null) {
         include('connection.php');
     $newEntry1 = "INSERT INTO journal(title, date, time_spent, entry)
@@ -30,22 +32,14 @@ function new_entry($title, $date, $time_spent, $entry, $link_name = null, $link_
         $results->bindValue(3, $time_spent, PDO::PARAM_STR);
         $results->bindValue(4, $entry, PDO::PARAM_STR);
         $results->execute();
+        //return the id of the last entry so that the correct 'journal_id' is
+        //added to both tables
         $id = $db->lastInsertId();
       }   catch (Exception $e) {
             echo "Unable to add entry1 <br />" . $e->getMessage();
             return false;
     }
-  //   $newEntry2 = "INSERT INTO resources(link_name, link_address, journal_id) VALUES (?, ?, ?)";
-  //   try {
-  //     $results2 = $db->prepare($newEntry2);
-  //     $results2->bindValue(1, $link_name, PDO::PARAM_STR);
-  //     $results2->bindValue(2, $link_address, PDO::PARAM_STR);
-  //     $results2->bindValue(3, $id, PDO::PARAM_INT);
-  //     $results2->execute();
-  //   }  catch (Exception $e)  {
-  //         echo "Unable to add entry <br />" . $e->getMessage();
-  //         return false;
-  // }
+
   $newEntry2 = "INSERT INTO resources(link_name, link_address, journal_id) VALUES (?, ?, ?)";
 
 for($i=0; $i < count($link_name); $i++) {
@@ -75,11 +69,12 @@ for($i=0; $i < count($link_name); $i++) {
         return true;
 }
 
-function update_entry($title, $date, $time_spent, $entry, $link_name, $link_address, $q) {
+function update_entry($title, $date, $time_spent, $entry, $link_name = null, $link_address = null, $q) {
     include('connection.php');
 
     $sql = "UPDATE journal SET title = ?, date = ?, time_spent = ?, entry = ?
             WHERE journal_id = ?";
+
 
     try {
           $results = $db->prepare($sql);
@@ -99,6 +94,16 @@ function update_entry($title, $date, $time_spent, $entry, $link_name, $link_addr
  }
       $sql2 = "UPDATE resources SET link_name = ?, link_address = ?, journal_id = ?
                 WHERE journal_id = ?";
+
+                for($i=0; $i < count($link_name); $i++) {
+
+                     $link = $link_name[$i];
+                     $address = $link_address[$i];
+
+                         if($link == null)
+                         {}  else {
+
+
        try {
             $results2 = $db->prepare($sql2);
             $results2->bindValue(1, $link_name, PDO::PARAM_STR);
@@ -112,6 +117,8 @@ function update_entry($title, $date, $time_spent, $entry, $link_name, $link_addr
                 return false;
 
                 }
+              }
+            }
               return true;
 
  }

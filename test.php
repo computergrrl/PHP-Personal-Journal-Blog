@@ -2,45 +2,49 @@
 require('inc/connection.php');
 include('inc/functions.php');
 
+foreach($resources as $jid)   {
+    echo $jid['journal_id'] . "<br />";
+
+}
 
 
 
 
-if(!empty($_POST)) {
-     $linkName = $_POST['link_name'];
-     $linkAddress = $_POST['link_address'];
-
-
-       $newEntry2 = "INSERT INTO resources(link_name, link_address) VALUES (?, ?)";
-
-     for($i=0; $i < count($linkName); $i++) {
-
-          $link = $linkName[$i];
-          $address = $linkAddress[$i];
-
-          if($link == null) {
-          } else {
-              try {
-                $the_links = $db->prepare($newEntry2);
-                $the_links->bindValue(1, $link, PDO::PARAM_STR);
-                $the_links->bindValue(2, $address, PDO::PARAM_STR);
-                $the_links->execute();
-
-              }  catch (Exception $e)  {
-                    echo "Unable to add entry1 <br />" . $e->getMessage();
-                    return false;
-              }
-            }
-            }
-
-
-
-    }
-
-
-include('inc/header.php');
-?>
-<html>
+// if(!empty($_POST)) {
+//      $linkName = $_POST['link_name'];
+//      $linkAddress = $_POST['link_address'];
+//
+//
+//        $newEntry2 = "INSERT INTO resources(link_name, link_address) VALUES (?, ?)";
+//
+//      for($i=0; $i < count($linkName); $i++) {
+//
+//           $link = $linkName[$i];
+//           $address = $linkAddress[$i];
+//
+//           if($link == null) {
+//           } else {
+//               try {
+//                 $the_links = $db->prepare($newEntry2);
+//                 $the_links->bindValue(1, $link, PDO::PARAM_STR);
+//                 $the_links->bindValue(2, $address, PDO::PARAM_STR);
+//                 $the_links->execute();
+//
+//               }  catch (Exception $e)  {
+//                     echo "Unable to add entry1 <br />" . $e->getMessage();
+//                     return false;
+//               }
+//             }
+//             }
+//
+//
+//
+//     }
+//
+//
+// include('inc/header.php');
+// ?>
+<!-- <html>
 <body>
 <section>
     <div class="container">
@@ -67,7 +71,7 @@ include('inc/header.php');
 </form>
 </div>
 </div>
-</section>
-<?php include('inc/footer.php'); ?>
-</body>
-</html>
+</section> -->
+<?php # include('inc/footer.php'); ?>
+<!-- </body> -->
+<!-- </html> -->
