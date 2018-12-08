@@ -21,17 +21,15 @@ $notes = filter_input(INPUT_POST, 'notes', FILTER_SANITIZE_STRING);
 
 }
 
-
 $q--;
 $get_id = $journals[$q];
-
 include('inc/header.php');
 ?>
         <section>
             <div class="container">
                 <div class="edit-entry">
                     <h2>Edit Entry</h2>
-                      <?php echo '<form action="edit.php?q=' .($q +1) .'" method="post">'; ?>
+                      <?php echo '<form action="edit.php?q=' .($q+1) .'" method="post">'; ?>
                         <label for="title">Title</label>
                         <input id="title" type="text" name="title" value="<?php echo $get_id['title'];?>"><br>
                         <label for="date">Date</label>
@@ -48,7 +46,7 @@ include('inc/header.php');
             foreach($resources as $link) {
 
 //if this entry already has links associated with it then pull them up
-                  if($link['journal_id'] == $get_id['journal_id']) {
+                  if($link['journal_id'] == ($q+1)) {
 
                     echo '<label for="link_name">Enter name for link:</label>';
                     echo '<input id="link_name" type="text" name="link_name" value="' .$link["link_name"] .'">';

@@ -1,11 +1,7 @@
 <?php
 require('inc/connection.php');
 include('inc/functions.php');
+$page = 'test';
 
-
-foreach($resources as $resource) {
-
-  echo $resource['notes'];
-  echo "<br />";
-
-}
+if($page == 'index') { echo "this is the page!";}
+else {echo "that did NOT work";}
