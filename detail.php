@@ -32,25 +32,22 @@ $entry_id--;
                         <div class="entry">
                             <h3>Resources to Remember:</h3>
 
-
-
-                            <ul>
                                 <?php
                                 foreach($resources as $resource) {
                                   if ($resource['journal_id'] == $journals[$entry_id]['journal_id']) {
-                                    echo '<li><a href="'
+                                    echo '<ul><li><a href="'
                                       . $resource['link_address']
                                       .'">'
                                       . $resource['link_name']
-                                      . '</a></li>';
+                                      . '</a></li></ul>';
+
+                                      echo "<h3> Additional Notes </h3>";
+                                      echo '<p>' .$resource['notes'] . '</p>';
                                   }
                                     }
+                                 ?>
 
-
-                                                            ?>
-
-                              </ul>
-                        </div>
+                                  </div>
 
                     </article>
                 </div>

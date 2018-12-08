@@ -10,7 +10,7 @@ try {
     exit;
 }
 //2nd query - used to access resources table
-try {  $sql2 = "SELECT link_id, link_name, link_address, resources.journal_id
+try {  $sql2 = "SELECT link_id, link_name, link_address, notes, resources.journal_id
    FROM resources JOIN journal ON journal.journal_id = resources.journal_id";
   $getResources = $db->prepare($sql2);
   $getResources->execute();
@@ -21,7 +21,7 @@ try {  $sql2 = "SELECT link_id, link_name, link_address, resources.journal_id
 }
 
 //function for adding new entries
-function new_entry($title, $date, $time_spent, $entry, $link_name = null, $link_address = null) {
+function new_entry($title, $date, $time_spent, $entry, $link_name = null, $link_address = null, $notes = null) {
         include('connection.php');
     $newEntry1 = "INSERT INTO journal(title, date, time_spent, entry)
                   VALUES(?, ?, ?, ?)" ;
@@ -40,43 +40,39 @@ function new_entry($title, $date, $time_spent, $entry, $link_name = null, $link_
             return false;
     }
 
-  $newEntry2 = "INSERT INTO resources(link_name, link_address, journal_id) VALUES (?, ?, ?)";
-
-for($i=0; $i < count($link_name); $i++) {
-
-     $link = $link_name[$i];
-     $address = $link_address[$i];
-
-         if($link == null)
-         {}  else {
+  $newEntry2 = "INSERT INTO resources(link_name, link_address, notes, journal_id) VALUES (?, ?, ?, ?)";
 
          try {
-           $the_links = $db->prepare($newEntry2);
-           $the_links->bindValue(1, $link, PDO::PARAM_STR);
-           $the_links->bindValue(2, $address, PDO::PARAM_STR);
-           $the_links->bindValue(3, $id, PDO::PARAM_INT);
-           $the_links->execute();
+           $the_resources = $db->prepare($newEntry2);
+           $the_resources->bindValue(1, $link_name, PDO::PARAM_STR);
+           $the_resources->bindValue(2, $link_address, PDO::PARAM_STR);
+           $the_resources->bindValue(3, $notes, PDO::PARAM_STR);
+           $the_resources->bindValue(4, $id, PDO::PARAM_INT);
+           $the_resources->execute();
 
          }  catch (Exception $e)  {
                echo "Unable to add entry2 <br />" . $e->getMessage();
                return false;
          }
 
-       }
 
-   }
+
+
 
         return true;
 }
 
-function update_entry($title, $date, $time_spent, $entry, $link_name = null, $link_address = null, $q) {
+function update_entry($title, $date, $time_spent, $entry, $link_name = null, $link_address = null, $notes = null, $q) {
+
     include('connection.php');
 
     $sql = "UPDATE journal SET title = ?, date = ?, time_spent = ?, entry = ?
             WHERE journal_id = ?";
 
+    $sql2 = "UPDATE resources SET link_name = ?, link_address = ?, notes = ?, journal_id = ?
+                      WHERE journal_id = ?";
 
-    try {
+        try {
           $results = $db->prepare($sql);
           $results->bindValue(1, $title, PDO::PARAM_STR);
           $results->bindValue(2, $date, PDO::PARAM_STR);
@@ -86,39 +82,25 @@ function update_entry($title, $date, $time_spent, $entry, $link_name = null, $li
 
           $results->execute();
 
-
-
             }   catch (Exception $e) {
               echo "Unable to add newentry1 <br />" . $e->getMessage();
               return false;
  }
-      $sql2 = "UPDATE resources SET link_name = ?, link_address = ?, journal_id = ?
-                WHERE journal_id = ?";
-
-                for($i=0; $i < count($link_name); $i++) {
-
-                     $link = $link_name[$i];
-                     $address = $link_address[$i];
-
-                         if($link == null)
-                         {}  else {
 
 
-       try {
-            $results2 = $db->prepare($sql2);
-            $results2->bindValue(1, $link_name, PDO::PARAM_STR);
-            $results2->bindValue(2, $link_address, PDO::PARAM_STR);
-            $results2->bindValue(3, $q, PDO::PARAM_INT);
-            $results2->bindValue(4, $q, PDO::PARAM_INT);
+               try {
+                  $results2 = $db->prepare($sql2);
+                  $results2->bindValue(1, $link_name, PDO::PARAM_STR);
+                  $results2->bindValue(2, $link_address, PDO::PARAM_STR);
+                  $results2->bindValue(3, $notes, PDO::PARAM_STR);
+                  $results2->bindValue(4, $q, PDO::PARAM_INT);
+                  $results2->bindValue(5, $q, PDO::PARAM_INT);
 
-            $results2->execute();
-          }  catch (Exception $e)  {
-                echo "Unable to add newentry2 <br />" . $e->getMessage();
-                return false;
+                  $results2->execute();
+                }  catch (Exception $e)  {
+                      echo "Unable to add newentry2 <br />" . $e->getMessage();
+                      return false;
 
                 }
-              }
-            }
-              return true;
-
+          return true;
  }

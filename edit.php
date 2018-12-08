@@ -10,24 +10,20 @@ $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
 $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
 $time_spent = filter_input(INPUT_POST, 'time_spent', FILTER_SANITIZE_STRING);
 $entry = filter_input(INPUT_POST, 'entry', FILTER_SANITIZE_STRING);
-// $link_name = filter_input(INPUT_POST, 'link_name', FILTER_SANITIZE_STRING);
-// $link_address = filter_input(INPUT_POST, 'link_address', FILTER_SANITIZE_URL);
-$link_name = $_POST['link_name'];
-$link_address = $_POST['link_address'];
-
+$link_name = filter_input(INPUT_POST, 'link_name', FILTER_SANITIZE_STRING);
+$link_address = filter_input(INPUT_POST, 'link_address', FILTER_SANITIZE_URL);
+$notes = filter_input(INPUT_POST, 'notes', FILTER_SANITIZE_STRING);
 
   if(update_entry($title, $date, $time_spent, $entry,
-  $link_name, $link_address, $q)) {
-      header('location:index.php');
+  $link_name, $link_address, $notes, $q)) {
+        header('location:index.php');
   }
 
-  }
+}
+
 
 $q--;
 $get_id = $journals[$q];
-
-
-
 
 include('inc/header.php');
 ?>
@@ -45,25 +41,22 @@ include('inc/header.php');
                         <label for="entry">What I Learned</label>
                         <textarea id="entry" rows="5" name="entry"><?php echo $get_id['entry'];?></textarea>
                         <fieldset>
-                          <legend>Resources to remember:</legend>
-                          <legend>Save a web link for later reference</legend>
+                          <legend>Resources to remember:</legend><br />
+                          <legend>Update web link </legend>
 
-                        <?php
+      <?php
+            foreach($resources as $link) {
 
-                        foreach($resources as $link) {
+//if this entry already has links associated with it then pull them up
+                  if($link['journal_id'] == $get_id['journal_id']) {
 
-
-                          if($link['journal_id'] == $get_id['journal_id']) {
-                          echo '<label for="link_name">Enter name for link:</label>';
-                          echo '<input id="link_name" type="text" name="link_name" value="' .$link["link_name"] .'">';
-                          echo '<label for="link_address">Enter web link here:</label>';
-                          echo '<input id="link_address" type="text" name="link_address" value="' .$link['link_address'] .'">';
-
-   
-                        }
-                        }
-
-                       ?>
+                    echo '<label for="link_name">Enter name for link:</label>';
+                    echo '<input id="link_name" type="text" name="link_name" value="' .$link["link_name"] .'">';
+                    echo '<label for="link_address">Enter web link here:</label>';
+                    echo '<input id="link_address" type="text" name="link_address" value="' .$link['link_address'] .'">';
+                    echo '<textarea rows="5" id="notes" name="notes">' . $link['notes'] . '</textarea>';
+                    }
+                } ?>
                         <input type="submit" value="Publish Entry" class="button">
                         <a href="#" class="button button-secondary">Cancel</a>
                     </form>
