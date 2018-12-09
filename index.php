@@ -9,14 +9,17 @@ include('inc/header.php');
                 <div class="entry-list">
                     <?php
 
-                    foreach(list_entries() as $entry) {
-                      echo '<article><h2><a href="detail.php?q=' .$entry["journal_id"]
-                              .'">' .$entry['title'] . '</a></h2>';
-                           $getdate = $entry['date'];
-                             $date = date("F d, Y", strtotime($getdate));
-                          echo '<time datetime="' .$getdate .'">'
-                                .$date .'</time></article>';
-                              }
+              foreach(list_entries() as $entry) {
+                      $getdate = $entry['date'];
+                      $date = date("F d, Y", strtotime($getdate));
+                      echo '<article><h2><a href="detail.php?q='
+                      . $entry["journal_id"]
+                      . '">' .$entry['title']
+                      . '</a></h2>';
+                      echo '<time datetime="'
+                      . $getdate . '">'
+                      . $date . '</time></article>';
+                  }
                               ?>
 
                 </div>

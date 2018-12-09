@@ -3,6 +3,12 @@ require('inc/connection.php');
 include('inc/functions.php');
 include('inc/header.php');
 $entry_id = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_NUMBER_INT);
+
+if (isset($_POST['delete'])) {
+    delete_entry($entry_id);
+    header('location:index.php');
+    exit;
+    }
 $entry_id--;
 
 ?>
@@ -29,6 +35,7 @@ $entry_id--;
           } ?>
               </div><div class="entry">
               <h3>Resources to Remember:</h3>
+              <p>
           <?php
             foreach($resources as $resource) {
                 if ($resource['journal_id'] ==                $journals[$entry_id]['journal_id']) {
@@ -37,15 +44,17 @@ $entry_id--;
                           .'">'
                           . $resource['link_name']
                           . '</a></li></ul>';
-
+                          echo "<br />";
                           echo "<h3> Additional Notes </h3>";
                           echo '<p>' .$resource['notes'] . '</p>';
               }
           }
-                   ?>  </div>
+                   ?>  </p></div>
                     </article>
+
                 </div>
             </div>
+
             <div class="edit">
                   <p>
                   <?php
@@ -56,6 +65,13 @@ $entry_id--;
                         . $project_id
                         . '">Edit Entry</a></p>';
                         ?>
+          <br>
+          <p>
+            <form method='post' action='detail.php?q=<?php echo ($entry_id +1);?>'>
+          <input type='hidden' value='<?php echo ($entry_id +1);?>' name='delete' />
+      <input type='submit' class="button" value='Delete Entry'  />
+            </form>
+          </p>
 
             </div>
         </section>

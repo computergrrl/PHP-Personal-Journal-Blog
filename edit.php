@@ -14,6 +14,8 @@ $link_name = filter_input(INPUT_POST, 'link_name', FILTER_SANITIZE_STRING);
 $link_address = filter_input(INPUT_POST, 'link_address', FILTER_SANITIZE_URL);
 $notes = filter_input(INPUT_POST, 'notes', FILTER_SANITIZE_STRING);
 
+
+
   if(update_entry($title, $date, $time_spent, $entry,
   $link_name, $link_address, $notes, $q)) {
         header('location:index.php');
@@ -57,7 +59,8 @@ include('inc/header.php');
                 } ?>
                         <input type="submit" value="Publish Entry" class="button">
                         <a href="#" class="button button-secondary">Cancel</a>
-                    </form>
+                      </form>
+
                 </div>
             </div>
         </section>

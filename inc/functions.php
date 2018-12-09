@@ -20,6 +20,8 @@
             exit;
       }
 
+//function used to show list of entries on index page that are
+//sorted by date  (descending)
 function list_entries() {
     include('connection.php');
   try {
@@ -72,7 +74,7 @@ $newEntry1 = "INSERT INTO journal(title, date, time_spent, entry)
 
         return true;
 }
-
+//function for editing an entry
 function update_entry($title, $date, $time_spent, $entry, $link_name = null, $link_address = null, $notes = null, $q) {
 
     include('connection.php');
@@ -113,3 +115,34 @@ function update_entry($title, $date, $time_spent, $entry, $link_name = null, $li
         }
           return true;
  }
+
+//function for deleting an entry
+function delete_entry($entry_id) {
+    include('connection.php');
+
+    $sql = "DELETE FROM journal WHERE journal_id = ?";
+    $sql2 = "DELETE FROM resources WHERE journal_id = ?";
+              try {
+                $results = $db->prepare($sql);
+                $results->bindValue(1, $entry_id, PDO::PARAM_INT);
+
+                $results->execute();
+
+                  }   catch (Exception $e) {
+                    echo "Unable to delete entry1 <br />" . $e->getMessage();
+                    return false;
+            }
+
+             try {
+                $results2 = $db->prepare($sql2);
+                $results2->bindValue(1, $entry_id, PDO::PARAM_INT);
+
+                $results2->execute();
+              }  catch (Exception $e)  {
+                    echo "Unable to delete entry2 <br />"
+                    . $e->getMessage();
+                    return false;
+            }
+return true;
+
+}
