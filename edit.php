@@ -3,7 +3,11 @@ require('inc/connection.php');
 include('inc/functions.php');
 
 $q = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_NUMBER_INT);
-
+if (isset($_POST['delete'])) {
+    delete_entry($q);
+    header('location:index.php');
+    exit;
+    }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
@@ -13,6 +17,7 @@ $entry = filter_input(INPUT_POST, 'entry', FILTER_SANITIZE_STRING);
 $link_name = filter_input(INPUT_POST, 'link_name', FILTER_SANITIZE_STRING);
 $link_address = filter_input(INPUT_POST, 'link_address', FILTER_SANITIZE_URL);
 $notes = filter_input(INPUT_POST, 'notes', FILTER_SANITIZE_STRING);
+
 
 
 
@@ -60,6 +65,10 @@ include('inc/header.php');
                         <input type="submit" value="Publish Entry" class="button">
                         <a href="#" class="button button-secondary">Cancel</a>
                       </form>
+            <p><form method='post' action='edit.php?q=<?php echo ($q +1);?>'>
+            <input type='hidden' value='<?php echo ($entry_id +1);?>' name='delete' />
+        <input type='submit' class="button" value='Delete Entry'  />
+      </form></p>
 
                 </div>
             </div>
