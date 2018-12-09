@@ -39,7 +39,7 @@ function list_entries() {
 function new_entry($title, $date, $time_spent, $entry, $link_name = null, $link_address = null, $notes = null) {
 
         include('connection.php');
-
+//first prepare statement - to add required fields to journal table
 $newEntry1 = "INSERT INTO journal(title, date, time_spent, entry)
                   VALUES(?, ?, ?, ?)" ;
                 try {
@@ -56,7 +56,7 @@ $newEntry1 = "INSERT INTO journal(title, date, time_spent, entry)
                           echo "Unable to add entry1 <br />" . $e->getMessage();
                           return false;
                   }
-
+//2nd prepare statement to add optional fields to resource table
   $newEntry2 = "INSERT INTO resources(link_name, link_address, notes, journal_id) VALUES (?, ?, ?, ?)";
 
                    try {
@@ -79,9 +79,11 @@ function update_entry($title, $date, $time_spent, $entry, $link_name = null, $li
 
     include('connection.php');
 
+//first prepare statement - to update journal table
   $sql = "UPDATE journal SET title = ?, date = ?, time_spent = ?, entry = ?
             WHERE journal_id = ?";
 
+//2nd prepare statement to update optional fields to resource table
   $sql2 = "UPDATE resources SET link_name = ?, link_address = ?, notes = ?, journal_id = ?  WHERE journal_id = ?";
 
                   try {

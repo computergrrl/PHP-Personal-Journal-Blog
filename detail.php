@@ -67,14 +67,18 @@ $entry_id--;
                         ?>
           <br>
           <p>
-            <form method='post' action='detail.php?q=<?php echo ($entry_id +1);?>'>
+            <form method='post' action='detail.php?q=<?php echo ($entry_id +1);?>' onsubmit="return confirm('Are you sure you want to delete this entry? (Can NOT be undone)')">
+
           <input type='hidden' value='<?php echo ($entry_id +1);?>' name='delete' />
-      <input type='submit' class="button" value='Delete Entry'  />
+
+          <input type='submit' class="button" value='Delete Entry'  />
             </form>
           </p>
 
             </div>
         </section>
-        <?php include('inc/footer.php'); ?>
+
+        <?php
+        include('inc/footer.php'); ?>
     </body>
 </html>

@@ -65,9 +65,10 @@ include('inc/header.php');
                         <input type="submit" value="Publish Entry" class="button">
                         <a href="#" class="button button-secondary">Cancel</a>
                       </form>
-            <p><form method='post' action='edit.php?q=<?php echo ($q +1);?>'>
+            <p><form method='post' action='edit.php?q=<?php echo ($q +1);?>'
+              onsubmit="return confirm('Are you sure you want to delete this entry? (Can NOT be undone)')">
             <input type='hidden' value='<?php echo ($entry_id +1);?>' name='delete' />
-        <input type='submit' class="button" value='Delete Entry'  />
+        <input type='submit' class="button delete" value='Delete Entry'  />
       </form></p>
 
                 </div>

@@ -11,11 +11,14 @@ $entry = filter_input(INPUT_POST, 'entry', FILTER_SANITIZE_STRING);
 $link_name = filter_input(INPUT_POST, 'link_name', FILTER_SANITIZE_STRING);
 $link_address = filter_input(INPUT_POST, 'link_address', FILTER_SANITIZE_URL);
 $notes = filter_input(INPUT_POST, 'notes', FILTER_SANITIZE_STRING);
-//$journal_id = $journals
-//use explode to add tags functionality separated by commas....?
-// $link_name = $_POST['link_name'];
-// $link_address = $_POST['link_address'];
-if(new_entry($title, $date, $time_spent, $entry, $link_name, $link_address, $notes)) {
+
+if($title == null || $date == null || $time_spent == null || $entry == null) {
+     // echo "<h2>Please enter all required fields</h2>";
+     echo '<script>alert("Please enter all required fields : Title, date, time spent and entry");</script>';
+
+}
+
+elseif(new_entry($title, $date, $time_spent, $entry, $link_name, $link_address, $notes)) {
     header('location:index.php');
 }  else {
   echo "<h1>Could not add entry</h1>";
@@ -29,14 +32,16 @@ include('inc/header.php');
             <div class="container">
                 <div class="new-entry">
                     <h2>New Entry</h2>
+                    <h5>* indicates required field</h5>
+                    <br>
                     <form method="post" action="new.php">
-                        <label for="title"> Title</label>
+                        <label for="title"> Title *</label>
                         <input id="title" type="text" name="title"><br>
-                        <label for="date">Date</label>
+                        <label for="date">Date *</label>
                         <input id="date" type="date" name="date"><br>
-                        <label for="time-spent"> Time Spent</label>
+                        <label for="time-spent"> Time Spent *</label>
                         <input id="time_spent" type="text" name="time_spent"><br>
-                        <label for="what-i-learned">What I Learned</label>
+                        <label for="what-i-learned">What I Learned *</label>
                         <textarea id="entry" rows="5" name="entry"></textarea>
                         <fieldset>
                           <legend>Resources to remember:</legend>
