@@ -62,7 +62,7 @@ include('inc/header.php');
                     echo '<textarea rows="5" id="notes" name="notes">' . $link['notes'] . '</textarea>';
                     }
                 } ?>
-                        <input type="submit" value="Publish Entry" class="button">
+                        <input type="submit" value="Edit Entry" class="button">
                         <a href="#" class="button button-secondary">Cancel</a>
                       </form>
             <p><form method='post' action='edit.php?q=<?php echo ($q +1);?>'
